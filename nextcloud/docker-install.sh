@@ -5,20 +5,21 @@
 # Description:  deploy next cloud service 
 
 nextcloudDocker ()  {
-		service_port="${1}"
-		volume_path="${2}"
-  container_name="${3}"
+		local service_port="${1}"
+		local volume_path="${2}"
+  local container_name="${3}"
 		echo "Starting to build nextcloud container"  
-		docker run -d -p "$service_port":80 -v nextcloud:"${volume_path}" nextcloud && ec="!?"
-  [ $ec = 0 ] &&  echo "Program has been succesfully built" || echo " Program has been failed to initiate"
+		docker run --name nextcloud_disk -d -p "$service_port":80 -v nextcloud:"${volume_path}" nextcloud && ec="$?"
+  [[ "$ec" -eq 0 ]] &&  echo "Program has been succesfully built" || echo " Program has been failed to initiate"
 }
 
 nextcloudCompose () {
-  
+ pass  
 }
 
 nextcloudDockerfile () {
   {
+   pass
    echo "cloud9_autorun=true"
    echo
    echo "if [ \"\$cloud9_autorun\" = true ]; then"
@@ -29,5 +30,19 @@ nextcloudDockerfile () {
   } > Dockerfile
 }
 
+nextcloudDestroy () {
+  docker rm -f nextcloud_disk 
+}
 
-fasdf
+run_main () {
+ # nextcloudDocker 90 "$(pwd)"
+  nextcloudDestroy 
+}
+
+## 
+case "$" in
+  build 
+    run_main ${1} ${2}  
+  *) 
+    echo "Error: Invalid Input"
+esac
