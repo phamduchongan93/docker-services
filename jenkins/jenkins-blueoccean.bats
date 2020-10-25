@@ -1,8 +1,12 @@
-#!/bin/env bats
+#!/usr/bin/env bats
 
 # docker image of Bat is at 'docker run -it bats/bats:latest --version
 source jenkins-blueoccean.sh
 
+@test "check if the intro work" {
+  run intro;
+  [ "$status" -eq 0 ] 
+}
 @test "check if script is executable" {
   [ -x 'jenkins-blueoccean.sh' ]
 }
