@@ -10,8 +10,6 @@
 # Instruction of jenkins blueoccean installation  is at https://www.jenkins.io/doc/book/installing/ # 
 #####################################################################################################
 
-source general.sh 
-
 container_name=""
 port=""
  
