@@ -1,11 +1,12 @@
 #!/bin/bash 
 #  Running Jenkins deplyment
 
-Source ./modules/jenkins-blueoccean.sh
+source modules/general.sh
+source modules/jenkins-blueoccean.sh
 
 while [ -n "$1" ]
 do
-		case $1 in 
+		case "$1" in 
 				run)
 						intro
 						run_main
