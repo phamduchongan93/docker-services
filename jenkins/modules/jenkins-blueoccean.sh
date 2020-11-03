@@ -31,11 +31,11 @@ intro () {
 
 destroyAll () {
   # wipe out the old jenkins docker contianer 
-  docker container stop jenkins-docker
-  docker container stop jenkins-blueocean
-  docker network remove jenkins
-  docker volume rm jenkins-docker-certs
-  docker volume rm jenkins-data
+  docker container stop jenkins-docker &> /dev/null
+  docker container stop jenkins-blueocean &> /dev/null
+  docker network remove jenkins &> /dev/null
+  docker volume rm jenkins-docker-certs & /dev/null
+  docker volume rm jenkins-data & /dev/null
   docker rm -f jenkins-docker
   docker rm -f jenkins-blueocean
 }
