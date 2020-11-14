@@ -3,8 +3,8 @@
 # Author: An Pham
 # Description: Program that helps to spin up calibre book docker container. To begin with interactive mode,type `calibre -i ` 
 # Version: Testing
-# 
 
+ARGS=($"@")
 ### Modules and variable declare ###
 container_name=""
 port=""
@@ -23,37 +23,63 @@ yumInstallDependency () {
 }
 
 input () {
-		echo "Please type in container_name: "
+  figlet 'Calibre Web'
+		printf "Please type in container_name: "
 		read container_name
 
-  echo "Please type in the location you want to share your books: "
+  printf "Please type in the location you want to share your books: "
   read path_to_calibre_library # global variable 
 
-  echo "Please type in location of your config: "
-  read path_to_config          # global variable
+  # printf "Please type in location of your config: "
+  # read path_to_config          # global variable
 
-		echo "Please type in port of your application: "
+		printf "Please type in port of your application: "
 		read port
-
 } 
+
+checkContainer () {
+# check if the container exist and running, and prompt user whether they want to remove the container
+  local container_name="$1"
+
+  docker ps -a | grep "^${container_name}$"; ec="$?";
+		if [[ "$ec" -eq 0 ]]; then
+				printf "The container $1 is running. Do you want to remove it? "
+				read answer
+				case "$answer" in
+						y|Y)
+						  docker rm -f "${container_name}"
+						  echo "Succefully remove the container ${container_name}!"
+							 read -p 'Please any key to continue'	
+								;;
+						n|N)
+        exit 0
+						  ;; 
+						*)
+						  printf "Error: Invalid selection" 
+								exit 1
+								;;
+    esac
+		fi 
+}
 
 calibreDocker () {
   local container_name=$1 
+		checkContainer "$container_name"
   local port=$2
   local books=$3
 
   # build container  of calibre web
   docker run -d \
-     --name=calibre-web \
+     --name="$container_name" \
      -e PUID=1000 \
      -e PGID=1000 \
      -e TZ=Europe/London \
      -e DOCKER_MODS=linuxserver/calibre-web:calibre \
      -p "$port:8083" \
-     -v '/home/anpham/Calibre Library':/config \
-     -v '/home/anpham/Calibre Library':/books \
+     -v "$books":/config \
+     -v "$books":/books \
      --restart unless-stopped \
-     linuxserver/calibre-web
+					 ghcr.io/linuxserver/calibre-web
 }
 
 output () {
@@ -67,11 +93,13 @@ output () {
 
 
 ### Main Program ###
+"$@"
 
-# calibreDocker "$container_name" "$port" "$path_to_config" "$path_to_calibre_library"
-calibreDocker "calibre-web" "8083" ""
+# calibreDocker "$container_name" "$port" "$books"
+input
+calibreDocker "$container_name" "$port" "$path_to_calibre_library";
 docker ps;
-#output "$container_name" "$port" "$path_to_calibre_library"
+output "$container_name" "$port";
 
 ### End main ### 
 help () {
