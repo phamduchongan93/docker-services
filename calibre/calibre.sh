@@ -13,12 +13,14 @@ path_to_calibre_library=""
 
 
 aptInstallDependency () {
+		# install extra pacakge in case needed
   sudo_checker
   apt-get install git curl -y
 		pass 
 }
 
 yumInstallDependency () {
+		# installing extra packages in case needed.
 		pass
 }
 
@@ -62,10 +64,23 @@ checkContainer () {
 		fi 
 }
 
-calibreDocker () {
+checkPort () {
+		local port_number="$1"
+  docker ps -a | grep ":$port_number" ; ec="$?"
+
+ 	if	[[ "$ec" -eq  0 ]]; then
+				echo "Port $port_number has been used. "
+				read -P "Press any key to continue" 
+  fi	
+}
+
+buildCalibreDocker () {
   local container_name=$1 
 		checkContainer "$container_name"
+		
   local port=$2
+		checkPort "$port"
+
   local books=$3
 
   # build container  of calibre web
@@ -82,13 +97,19 @@ calibreDocker () {
 					 ghcr.io/linuxserver/calibre-web
 }
 
+destroyCalibreDocker () {
+  pass
+}
+
 output () {
   container_name="${1}"
   port="${2}"
 
   echo " Container has been successfully deployed"
   echo " ${container_name} is running on port ${port}"
-  echo " "
+  echo " Default login: admin"
+  echo " Default pass: admin123"
+		  
 }
 
 
