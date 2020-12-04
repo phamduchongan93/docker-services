@@ -28,6 +28,10 @@
     - name: Update apt and install docker-ce
       apt: update_cache=yes name=docker-ce state=latest
 
+
+    - name: install extra packages
+      apt: name=figlet state=latest
+
     - name: Install Docker Module for Python
       pip:
         name: docker
