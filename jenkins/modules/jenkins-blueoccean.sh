@@ -75,6 +75,9 @@ createNestedDocker () {
 }
 
 createJenkinsBlueoccean () {
+  jenkinsPort=49000
+  jenkinsName='jenkins-blueocean'	
+
   checkContainer 'jenkins-blueocean'
   docker container run \
       --name jenkins-blueocean \
@@ -84,7 +87,7 @@ createJenkinsBlueoccean () {
        --env DOCKER_HOST=tcp://docker:2376 \
        --env DOCKER_CERT_PATH=/certs/client \
        --env DOCKER_TLS_VERIFY=1 \
-       --publish 49000:8080 \
+       --publish "$jenkinsPort:8080" \
        --publish 50000:50000 \
        --volume jenkins-data:/var/jenkins_home \
        --volume jenkins-docker-certs:/certs/client:ro \
@@ -105,7 +108,7 @@ run_main () {
   createVolume
   createNestedDocker
   createJenkinsBlueoccean
-  output Jenkins-blueocean 50000
+  output Jenkins-blueocean 
 }
 
 ## Help module #
