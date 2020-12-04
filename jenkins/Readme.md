@@ -20,4 +20,3 @@
 For example:
 If I have the jenkin server on port 49000, the socket I will access via web browser is 192.168.18.2:49000
 
-
