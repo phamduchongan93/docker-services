@@ -118,6 +118,7 @@ output () {
 
 # calibreDocker "$container_name" "$port" "$books"
 input
+checkContainer
 calibreDocker "$container_name" "$port" "$path_to_calibre_library";
 docker ps;
 output "$container_name" "$port";
