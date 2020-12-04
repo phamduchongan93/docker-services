@@ -31,11 +31,11 @@ intro () {
 
 destroyAll () {
   # wipe out the old jenkins docker contianer 
-  docker container stop jenkins-docker &> /dev/null
-  docker container stop jenkins-blueocean &> /dev/null
-  docker network remove jenkins &> /dev/null
-  docker volume rm jenkins-docker-certs & /dev/null
-  docker volume rm jenkins-data & /dev/null
+  docker container stop jenkins-docker 
+  docker container stop jenkins-blueocean 
+  docker network remove jenkins 
+  docker volume rm jenkins-docker-certs 
+  docker volume rm jenkins-data 
   docker rm -f jenkins-docker
   docker rm -f jenkins-blueocean
 }
@@ -105,7 +105,7 @@ run_main () {
   createVolume
   createNestedDocker
   createJenkinsBlueoccean
-  output Jenkins-blueocean 50000
+  output Jenkins-blueocean 49000
 }
 
 ## Help module #
