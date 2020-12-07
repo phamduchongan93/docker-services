@@ -1,6 +1,5 @@
 #!/bin/bash
 
-source modules/general.sh
 source modules/installKanboard.sh
 
 while [ "$#" -gt 0 ]

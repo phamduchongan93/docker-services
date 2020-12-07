@@ -55,3 +55,7 @@
         command: "{{ default_container_command }}"
         state: present
       with_sequence: count={{ create_containers }}
+
+     - name: Run the main script to test services
+       script: /vagrant/main.sh run 
+
