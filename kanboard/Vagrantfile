@@ -9,15 +9,15 @@
 ENV['VAGRANT_DEFAULT_PROVIDER'] = 'libvirt'
 
 Vagrant.configure("2") do |config|
-	config.vm.define "Testing-server" do |config|
-		config.vm.hostname = "Testing-server"
+	config.vm.define "Kanboard" do |config|
+		config.vm.hostname = "Kanboard-server"
 		config.vm.box = "generic/ubuntu1804"
 		#config.vm.box_check_update = false
 		config.vm.network "private_network", ip: "192.168.18.2"
 		config.vm.network :forwarded_port, guest: 22, host: 22 
 		config.vm.provider :libvirt do |domain|
 			 domain.cpus = 2
-			 domain.memory = 1024
+			 domain.memory = 512
 		end
 	#	config.vm.synced_folder './', '/vagrant', type: '9p', disabled: false, accessmode: "squash", owner: "1000"
  # 	config.vm.provision "shell", path: "ubuntu-docker-install.sh"

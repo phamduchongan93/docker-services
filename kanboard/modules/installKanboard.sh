@@ -1,9 +1,12 @@
 #!/bin/bash
 
 # Variable Declare # 
-containerName=""
-portNumber=""
-
+input () {
+		printf "Name the container: "
+  read containerName
+		printf "Assign the port for container: "
+  read portNumber
+}
 # Function Declare # 
 
 intro () {
@@ -36,7 +39,7 @@ buildKanboard () {
 }
 
 destroyAll () {
-	
+  pass 
 }
 
 output () {
@@ -44,9 +47,8 @@ output () {
 } 
 
 runMain () {
-		checkContainer $containerName
   input $containerName $portNumber
+		checkContainer $containerName
 		buildKanboard $containerName $portNumber
 		output 
 } 
-
