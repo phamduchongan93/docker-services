@@ -1,4 +1,0 @@
-Warning: Permanently added '192.168.121.67' (ECDSA) to the list of known hosts.
-bind: Cannot assign requested address
-channel_setup_fwd_listener_tcpip: cannot listen to port: 22
-Could not request local forwarding.
