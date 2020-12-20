@@ -1,2 +1,1 @@
-Warning: Permanently added '192.168.121.2' (ECDSA) to the list of known hosts.
-Timeout, server 192.168.121.2 not responding.
+Warning: Permanently added '192.168.121.67' (ECDSA) to the list of known hosts.
