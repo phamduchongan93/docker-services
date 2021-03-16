@@ -29,66 +29,34 @@ intro () {
   figlet "Jenkins Blueoccean" 
 }
 
-destroyAll () {
-  # wipe out the old jenkins docker contianer 
-  docker container stop jenkins-docker 
-  docker container stop jenkins-blueocean 
-  docker network remove jenkins 
-  docker volume rm jenkins-docker-certs 
-  docker volume rm jenkins-data 
-  docker rm -f jenkins-docker
-  docker rm -f jenkins-blueocean
-}
-
-createNetwork() {
- #create network jenkins
- docker network ls | grep jenkins > /dev/null; local ec="$?" 
- [ $ec -eq 1 ] &&  docker network create jenkins 
+destroyContainer () {
+  local containerName="${1}"
+  docker rm -f "${containerName}"
 }
 
 createVolume () {
   # create volumes to share TLS certificates
-  docker volume create jenkins-docker-certs
-  docker volume create jenkins-data
+  docker volume create jenkins_home
 }
+
+
 
 checkContainer () {
   local container_name="${1}"
   docker ps | grep -i "$container_name"; ec="$?"
   [ $ec -eq 0 ] && exit 0
+  destroyContainer "$container_name"
 }
 
-createNestedDocker () {
- checkContainer 'jenkins-docker' 
- docker container run \
-  --name jenkins-docker \
-  --rm \
-  --detach \
-  --privileged \
-  --network jenkins \
-  --network-alias docker \
-  --env DOCKER_TLS_CERTDIR=/certs  \
-  --volume jenkins-docker-certs:/certs/client \
-  --volume jenkins-data:/var/jenkins_home \
-  --publish 2376:2376 \
-  docker:dind 
-}
-
-createJenkinsBlueoccean () {
-  checkContainer 'jenkins-blueocean'
-  docker container run \
-      --name jenkins-blueocean \
-      --rm \
-      --detach \
-       --network jenkins \
-       --env DOCKER_HOST=tcp://docker:2376 \
-       --env DOCKER_CERT_PATH=/certs/client \
-       --env DOCKER_TLS_VERIFY=1 \
-       --publish 49000:8080 \
-       --publish 50000:50000 \
-       --volume jenkins-data:/var/jenkins_home \
-       --volume jenkins-docker-certs:/certs/client:ro \
-       jenkinsci/blueocean
+createJenkinsDocker () {
+  checkContainer 'jenkins-server' 
+  destroyContainer 'jenkins-server'
+  docker pull mlucken/jenkins-arm
+  docker container run -d \
+  --name jenkins-server \
+  -p 8080:8080 -p 50000:50000 \
+  -v jenkins_home:/var/jenkins_home \
+  mlucken/jenkins-arm
 }
 
 output () {
@@ -100,22 +68,19 @@ output () {
 }
 
 run_main () {                   
-  destroyAll
-  createNetwork                
   createVolume
-  createNestedDocker
-  createJenkinsBlueoccean
-  output Jenkins-blueocean 49000
+  createJenkinsDocker 
+  output Jenkins-server 8080
 }
 
 ## Help module #
 help () {
-  echo "Usuage: $(basename $0) <-i|-d>  "
+  echo "Usuage: $(basename $0) <-r|-d>  "
   echo ''
   echo 'Where:'
-  echo '  -h,--help          show the help page'
-  echo '  -b,build           launch program in interactive mode ' 
-  echo '  -d,--destroy       destroy container'
+  echo '  -h,--help        show the help page'
+  echo '  -r,run           launch program in interactive mode ' 
+  echo '  -d,destroy       destroy container'
   echo ''
   echo 'Example:'
   echo "  $(basename $0) -s   display status of the jenkins"

@@ -7,12 +7,12 @@ source modules/jenkins-blueoccean.sh
 while [ "$#" -gt 0 ]
 do
   case "$1" in 
-    run)
+    -r|run)
       intro
       run_main
       ;;
-    destroy)
-      destroyAll
+    -d|destroy)
+      destroyContainer "jenkins-server"
       ;;
     test) 
       bats jenkins-blueoccean.bats;
