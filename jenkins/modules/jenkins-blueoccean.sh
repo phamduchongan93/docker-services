@@ -1,9 +1,7 @@
 #!/bin/bash
 # Author: An Pham
 # Filename: Jenkins-blueoccean.sh
-# Description: Modules and submodules used to deploy jenkins blueoccean. 
-# Keep in mind that the blueoocean will use two container. One contains the docker engine and other contains the blueoccean container.
-
+# Description: Deploy jenkin docker on raspberry pi4 (arm)
 # Version: Stable
 
 #####################################################################################################
@@ -59,6 +57,14 @@ createJenkinsDocker () {
   mlucken/jenkins-arm
 }
 
+echoPass () {
+  local containerName="${1}"
+
+  command=$(eval 'docker exec -t "$containerName" /bin/cat /var/jenkins_home/secrets/initialAdminPassword')
+  printf " Your initial Jenkins passwordis: $command \nPlease copy this pass to your jenkins server! \n " 
+}
+
+
 output () {
   container_name="${1}"
   port="${2}"
@@ -70,7 +76,8 @@ output () {
 run_main () {                   
   createVolume
   createJenkinsDocker 
-  output Jenkins-server 8080
+  output jenkins-server 8080
+  echoPass jenkins-server
 }
 
 ## Help module #
