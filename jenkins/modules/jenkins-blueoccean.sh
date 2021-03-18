@@ -33,7 +33,6 @@ destroyContainer () {
 }
 
 createVolume () {
-  # create volumes to share TLS certificates
   docker volume create jenkins_home
 }
 
@@ -61,15 +60,17 @@ echoPass () {
   local containerName="${1}"
 
   command=$(eval 'docker exec -t "$containerName" /bin/cat /var/jenkins_home/secrets/initialAdminPassword')
-  printf " Your initial Jenkins passwordis: $command \nPlease copy this pass to your jenkins server! \n " 
+  printf "Your initial Jenkins password is: $command \nPlease copy this pass to your jenkins server! \n " 
 }
 
 
 output () {
-  container_name="${1}"
-  port="${2}"
-  echo " Container has been successfully deployed"
-  echo " ${container_name} is running on port ${port}"
+  local container_name="${1}"
+  local port="${2}"
+  local hostIP=$(eval "hostname -I | cut -d ' ' -f1")
+  clear;
+  echo "Container has been successfully deployed"
+  echo " ${container_name} is running on ${hostIP}:${port}"
   echo " "
 }
 
@@ -90,7 +91,6 @@ help () {
   echo '  -d,destroy       destroy container'
   echo ''
   echo 'Example:'
-  echo "  $(basename $0) -s   display status of the jenkins"
   echo "  $(basename $0) -d   destroy the container  "
 }       
 
