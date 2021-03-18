@@ -49,7 +49,7 @@ createJenkinsDocker () {
   checkContainer 'jenkins-server' 
   destroyContainer 'jenkins-server'
   docker pull mlucken/jenkins-arm
-  docker container run -d \
+  docker run -d \
   --name jenkins-server \
   -p 8080:8080 -p 50000:50000 \
   -v jenkins_home:/var/jenkins_home \
