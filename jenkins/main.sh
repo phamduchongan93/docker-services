@@ -1,5 +1,5 @@
 #!/bin/bash 
-#  Running Jenkins deplyment
+# Running Jenkins deployment
 
 source modules/general.sh
 source modules/jenkins-blueoccean.sh

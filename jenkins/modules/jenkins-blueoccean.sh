@@ -114,12 +114,16 @@ help () {
   echo ''
   echo 'Where:'
   echo '  -h,--help          show the help page'
-  echo '  -b,build           launch program in interactive mode ' 
+  echo '  -s,--status        display the status of jenkins'
+  echo '  -b,--build         launch program in interactive mode ' 
   echo '  -d,--destroy       destroy container'
-  echo ''
+  echo '__________________________________________________________________'
   echo 'Example:'
-  echo "  $(basename $0) -s   display status of the jenkins"
-  echo "  $(basename $0) -d   destroy the container  "
+  echo "  $(basename $0) -h         show the help page"
+  echo "  $(basename $0) -s         display status of the jenkins"
+  echo "  $(basename $0) -b         build the program in interactive mode "
+  echo "  $(basename $0) -d         destroy the container  "
+  echo '__________________________________________________________________'
 }       
 
 
