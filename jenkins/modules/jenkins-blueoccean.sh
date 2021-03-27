@@ -55,7 +55,7 @@ createVolume () {
 checkContainer () {
   local container_name="${1}"
   docker ps | grep -i "$container_name"; ec="$?"
-  [ $ec -eq 0 ] && exit 0
+  [ $ec -eq 0 ] && exit 1
 }
 
 createNestedDocker () {
@@ -110,18 +110,19 @@ run_main () {
 
 ## Help module #
 help () {
-  echo "Usuage: $(basename $0) <-i|-d>  "
+  echo "Usuage: $(basename $0) <-i|-d>"
   echo ''
   echo 'Where:'
-  echo '  -h,--help          show the help page'
-  echo '  -s,--status        display the status of jenkins'
-  echo '  -b,--build         launch program in interactive mode ' 
-  echo '  -d,--destroy       destroy container'
-  echo '__________________________________________________________________'
+  echo '  -h,--help        show the help page'  
+  echo '  -r,--run         check container'
+  echo '  -c,--check       launch program in interactive mode ' 
+  echo '  -d,--destroy     destroy container'
+  echo '  -i,--install     use apt to install dependency'
+  echo '  -y,--yumInstall  use yum to install  dependency' 
+  echo'__________________________________________________________________'
   echo 'Example:'
-  echo "  $(basename $0) -h         show the help page"
-  echo "  $(basename $0) -s         display status of the jenkins"
-  echo "  $(basename $0) -b         build the program in interactive mode "
+  echo "  $(basename $0) -r         runs all the needed modules "
+  echo "  $(basename $0) -c         check for container " 
   echo "  $(basename $0) -d         destroy the container  "
   echo '__________________________________________________________________'
 }       

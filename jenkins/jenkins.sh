@@ -7,14 +7,23 @@ source modules/jenkins-blueoccean.sh
 while [ "$#" -gt 0 ]
 do
   case "$1" in 
-    run)
+    -r)
       intro
       run_main
       ;;
-    destroy)
+    -d)
       destroyAll
       ;;
-    test) 
+    -c)
+      checkContainer 
+      ;;
+    -i)
+      aptInstallDepency
+      ;;
+    -y) 
+      yumInstallDependency
+      ;;
+ test) 
       bats jenkins-blueoccean.bats;
       ;;
     *)
