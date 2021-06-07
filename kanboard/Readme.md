@@ -1,3 +1,3 @@
 # Usuage
-- Type 'install run' to spin up a docker container.
+- Type 'kanboard.sh run' to spin up a docker container.
 
