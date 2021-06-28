@@ -5,14 +5,15 @@ source modules/installKanboard.sh
 while [ "$#" -gt 0 ]
 do
   case "$1" in 
-    -r|run)
+    -r | run)
       intro
       runMain 
       ;;
-    -d|destroy)
-      destroyAll
+    -d | destroy)
+      shift
+      destroyAll "$1"
       ;;
-    -t|test) 
+    -t | test) 
       ;;
     *)
       echo "Error: Invalid option"
