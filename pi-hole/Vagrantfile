@@ -5,8 +5,25 @@
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
+#
+ENV['VAGRANT_DEFAULT_PROVIDER'] = 'libvirt'
+
 Vagrant.configure("2") do |config|
-  config.vm.provider "docker" do |d|
-    d.image = 'foo/bar'
+	config.vm.define "pihole-testserver" do |config|
+		config.vm.hostname = "pihole-testserver"
+		config.vm.box = "generic/ubuntu2010"
+		#config.vm.box_check_update = false
+		config.vm.network "private_network", ip: "192.168.18.100"
+		config.vm.provider :libvirt do |domain|
+			 domain.cpus = 2
+			 domain.memory = 1048
+		end
+	#	config.vm.synced_folder './', '/vagrant', type: '9p', disabled: false, accessmode: "squash", owner: "1000"
+ # 	config.vm.provision "shell", path: "ubuntu-docker-install.sh"
+#  config.vm.synced_folder "./", "/vagrant", type: "sshfs"
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "ubuntu-playbook.yml"
   end 
+
+ end  # ending vm2 define
 end
