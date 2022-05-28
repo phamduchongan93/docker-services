@@ -1,0 +1,3 @@
+[submodule "kasm/vagrant"]
+	path = kasm/vagrant
+	url = https://github.com/phamduchongan93/vagrant
